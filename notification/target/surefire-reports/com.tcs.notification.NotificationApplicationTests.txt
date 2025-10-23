@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.tcs.notification.NotificationApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.23 s -- in com.tcs.notification.NotificationApplicationTests

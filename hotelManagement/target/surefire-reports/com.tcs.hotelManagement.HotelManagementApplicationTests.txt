@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.tcs.hotelManagement.HotelManagementApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 13.59 s -- in com.tcs.hotelManagement.HotelManagementApplicationTests

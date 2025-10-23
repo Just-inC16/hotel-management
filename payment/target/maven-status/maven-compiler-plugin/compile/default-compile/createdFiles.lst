@@ -1,0 +1,4 @@
+com\tcs\payment\Payment.class
+com\tcs\payment\PaymentController.class
+com\tcs\payment\PaymentRepository.class
+com\tcs\payment\PaymentApplication.class

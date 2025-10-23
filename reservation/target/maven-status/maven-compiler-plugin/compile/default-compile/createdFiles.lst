@@ -1,0 +1,11 @@
+com\tcs\reservation\ReservationRepository.class
+com\tcs\reservation\Reservation.class
+com\tcs\reservation\ReservationController.class
+com\tcs\reservation\Dto\Payment.class
+com\tcs\reservation\Dto\Notification.class
+com\tcs\reservation\feign\NotificationClient.class
+com\tcs\reservation\Dto\HotelManagement.class
+com\tcs\reservation\ReservationApplication.class
+com\tcs\reservation\feign\PaymentClient.class
+com\tcs\reservation\feign\HotelManagementClient.class
+com\tcs\reservation\Dto\Status.class

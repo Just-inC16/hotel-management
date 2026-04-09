@@ -109,6 +109,7 @@ public class CustomerController {
 		return true;
 	}
 
+	// Test
 	// Look for @ & characters after @(gmail.com)
 	public Boolean isEmailFormat(String email) {
 		return email.contains("@") && email.indexOf("@") < email.length();

@@ -1,4 +1,4 @@
 # Runtime stage
-FROM eclipse-temurin:17-jdk
+FROM public.ecr.aws/amazoncorretto/17
 COPY /target/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]

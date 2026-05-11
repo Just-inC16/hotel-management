@@ -23,6 +23,7 @@
 # ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # Runtime stage
-FROM eclipse-temurin:17-jdk-alpine
+# FROM eclipse-temurin:17-jdk-alpine
+FROM openjdk:27-ea-slim
 COPY /target/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]

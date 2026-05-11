@@ -23,6 +23,6 @@
 # ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # Runtime stage
-FROM bellsoft/liberica-openjdk-alpine:17
+FROM eclipse-temurin:17-jdk-alpine
 COPY /target/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]

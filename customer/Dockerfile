@@ -24,6 +24,8 @@
 
 # Runtime stage
 # FROM eclipse-temurin:17-jdk-alpine
-FROM openjdk:27-ea-slim
+# FROM bellsoft/liberica-openjdk-alpine:17
+# FROM openjdk:27-ea-slim
+FROM amazoncorretto:latest
 COPY /target/*.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]

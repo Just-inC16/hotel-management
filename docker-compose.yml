@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  # -----------------------
+  # Eureka Server
+  # -----------------------
+  eureka-server:
+    build: ./eurekaServer
+    ports:
+      - "8761:8761"
+
+  # -----------------------
+  # MySQL Database
+  # -----------------------
+  mysql-db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root
+    ports:
+      - "3307:3307"
+ # -----------------------
+  # Customer Service
+  # -----------------------
+  customer:
+    build: ./customer
+    depends_on:
+      - eureka-server
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3307/customer
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"

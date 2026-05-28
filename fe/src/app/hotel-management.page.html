@@ -1,0 +1,109 @@
+<section class="hotel-page">
+  <div class="hero-card">
+    <div>
+      <p class="eyebrow">Hotel Operations</p>
+      <h1>Hotel Management</h1>
+      <p>
+        Review properties, update available rooms, and track hotel status in one
+        dashboard.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a routerLink="/hotels" class="button active">Hotels Dashboard</a>
+    </div>
+  </div>
+
+  <div class="grid-layout">
+    <section class="hotel-list">
+      <div class="section-heading">
+        <h2>Hotel inventory</h2>
+        <p>Manage your hotel portfolio and update status in real time.</p>
+      </div>
+
+      <div *ngIf="hotels.length; else emptyState" class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Location</th>
+              <th>Rooms</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let hotel of hotels">
+              <td>{{ hotel.name }}</td>
+              <td>{{ hotel.location }}</td>
+              <td>{{ hotel.rooms }}</td>
+              <td>{{ hotel.status }}</td>
+              <td>
+                <button
+                  type="button"
+                  class="icon-button"
+                  (click)="deleteHotel(hotel.id)"
+                >
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">
+          <p>No hotels available yet. Use the form to add a new property.</p>
+        </div>
+      </ng-template>
+    </section>
+
+    <aside class="hotel-form">
+      <div class="section-heading">
+        <h2>Add a hotel</h2>
+        <p>Enter property details and create a new hotel record.</p>
+      </div>
+
+      <form (ngSubmit)="addHotel()" #hotelForm="ngForm" class="form-card">
+        <label>
+          Hotel name
+          <input name="name" [(ngModel)]="newHotel.name" required />
+        </label>
+
+        <label>
+          Location
+          <input name="location" [(ngModel)]="newHotel.location" required />
+        </label>
+
+        <label>
+          Rooms available
+          <input
+            name="rooms"
+            type="number"
+            min="1"
+            [(ngModel)]="newHotel.rooms"
+            required
+          />
+        </label>
+
+        <label>
+          Status
+          <select name="status" [(ngModel)]="newHotel.status">
+            <option *ngFor="let status of statuses" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="!hotelForm.form.valid">
+            Add hotel
+          </button>
+          <button type="button" class="secondary" (click)="resetForm()">
+            Reset
+          </button>
+        </div>
+      </form>
+    </aside>
+  </div>
+</section>

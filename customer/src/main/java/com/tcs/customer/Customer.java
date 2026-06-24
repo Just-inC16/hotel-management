@@ -32,4 +32,5 @@ public class Customer {
 	private String password;
 
 	// Getters and setters...
+	// This is a test
 }

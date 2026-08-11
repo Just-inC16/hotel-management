@@ -1,4 +1,5 @@
-# Runtime stage
-FROM bellsoft/liberica-openjdk-alpine:17
-COPY /target/*.jar app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
+WORKDIR /app
+COPY target/*.jar app.jar
+EXPOSE 8081
+ENTRYPOINT ["java", "-jar", "app.jar"]

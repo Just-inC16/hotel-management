@@ -14,10 +14,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 //@Data
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @Table(name = "payment")
 public class Payment {
+	
+
 	
 
 	@Id
@@ -29,9 +31,16 @@ public class Payment {
 
 	@Column(name = "amount", nullable = false)
 	private BigDecimal amount;
-
+	public Payment() {
+		
+	}
 	// Additional fields such as payment method, status etc.
-
+	public Payment(Long id, Long customerId, BigDecimal amount) {
+		super();
+		this.id = id;
+		this.customerId = customerId;
+		this.amount = amount;
+	}
 	// Getters and setters...
 	public Long getId() {
 		return id;

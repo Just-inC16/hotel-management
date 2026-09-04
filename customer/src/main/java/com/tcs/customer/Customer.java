@@ -30,6 +30,8 @@ public class Customer {
 
 	@Column(name = "password", nullable = false)
 	private String password;
-
+	
+	//Customer or manager role 
+	private String role;
 	// Getters and setters...
 }

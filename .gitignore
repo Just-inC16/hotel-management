@@ -28,3 +28,9 @@ secrets.md
 hs_err_pid*
 replay_pid*
 
+
+#ignore the claude related files
+.agents/
+.claude/
+skills-lock.json
+

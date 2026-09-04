@@ -21,5 +21,10 @@ public class Notification {
 
 	private String entity;
 	private String message;
+	
+	public Notification(String entity, String message) {
+		this.entity= entity;
+		this.message=message;
+	}
 
 }

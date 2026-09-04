@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,6 @@ public class ReservationController {
 	private HotelManagementClient hotelManagementClient;
 	private PaymentClient paymentClient;
 	private NotificationClient notificationClient;
-
 	public ReservationController(ReservationRepository reservationRepository,
 			HotelManagementClient hotelManagementClient, PaymentClient paymentClient,
 			NotificationClient notificationClient) {
@@ -84,5 +84,11 @@ public class ReservationController {
 	@PostMapping("/sendNotification")
 	public ResponseEntity<Notification> sendNotification(@RequestBody Notification notification) {
 		return notificationClient.sendNotification(notification);
+	}
+	@KafkaListener(topics = "reserve-room")
+	public String getNotifications(Reservation reservation)  {
+		System.out.println("Recieved account event" + reservation.toString());
+		
+		return "Successful" + reservation.toString();
 	}
 }

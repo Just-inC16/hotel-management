@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.tcs.reservation.Dto.Notification;
 
 @Component
-@FeignClient(name = "api-gateway2", url = "localhost:8085")
+@FeignClient(name = "api-gateway2", url = "${gateway.url:localhost:8085}")
 public interface NotificationClient {
 	@PostMapping("/notification/api/v1/notifications/send")
 	public ResponseEntity<Notification> sendNotification(@RequestBody Notification notification);

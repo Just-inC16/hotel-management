@@ -1,4 +1,4 @@
-package com.tcs.reservation;
+package com.tcs.reservation.model;
 
 import java.time.LocalDate;
 
@@ -23,17 +23,13 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name = "customerId", nullable = false)
+	@Column(name = "customer_id", nullable = false)
 	private Long customerId;
-
-	@Column(name = "hotelId", nullable = false)
+	@Column(name = "hotel_id", nullable = false)
 	private Long hotelId;
-
-	@Column(name = "startDate", nullable = false)
+	@Column(name = "start_date", nullable = false)
 	private LocalDate startDate;
-
-	@Column(name = "endDate", nullable = false)
+	@Column(name = "end_date", nullable = false)
 	private LocalDate endDate;
 
 	// Getters and setters...

@@ -1,16 +1,12 @@
-package com.tcs.reservation;
+package com.tcs.reservation.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import com.tcs.reservation.Dto.HotelManagement;
 import com.tcs.reservation.Dto.Notification;
@@ -18,16 +14,18 @@ import com.tcs.reservation.Dto.Payment;
 import com.tcs.reservation.feign.HotelManagementClient;
 import com.tcs.reservation.feign.NotificationClient;
 import com.tcs.reservation.feign.PaymentClient;
+import com.tcs.reservation.model.Reservation;
+import com.tcs.reservation.repository.ReservationRepository;
 
-@RestController
-@RequestMapping("/api/v1/reservations")
-public class ReservationController {
+@Service
+public class ReservationService {
 
-	private ReservationRepository reservationRepository;
-	private HotelManagementClient hotelManagementClient;
-	private PaymentClient paymentClient;
-	private NotificationClient notificationClient;
-	public ReservationController(ReservationRepository reservationRepository,
+	private final ReservationRepository reservationRepository;
+	private final HotelManagementClient hotelManagementClient;
+	private final PaymentClient paymentClient;
+	private final NotificationClient notificationClient;
+
+	public ReservationService(ReservationRepository reservationRepository,
 			HotelManagementClient hotelManagementClient, PaymentClient paymentClient,
 			NotificationClient notificationClient) {
 		this.reservationRepository = reservationRepository;
@@ -36,21 +34,21 @@ public class ReservationController {
 		this.notificationClient = notificationClient;
 	}
 
-	@PostMapping
-	public ResponseEntity<?> makeReservation(@RequestBody Reservation reservation) {
-		return ResponseEntity.ok(reservationRepository.save(reservation));
+	public Reservation makeReservation(Reservation reservation) {
+		return reservationRepository.save(reservation);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getReservationById(@PathVariable Long id) {
+	public Reservation getReservationById(Long id) {
 		Reservation reservationById = reservationRepository.getReferenceById(id);
-		Reservation reservationDto = new Reservation(reservationById.getId(), reservationById.getCustomerId(),
+		return new Reservation(reservationById.getId(), reservationById.getCustomerId(),
 				reservationById.getHotelId(), reservationById.getStartDate(), reservationById.getEndDate());
-		return ResponseEntity.ok(reservationDto);
 	}
 
-	@PostMapping("/reserveHotel")
-	public ResponseEntity<Notification> reserveHotel(@RequestBody Reservation reservation) {
+	public List<Reservation> getReservationsByCustomer(Long customerId) {
+		return reservationRepository.findByCustomerIdOrderByStartDateDesc(customerId);
+	}
+
+	public ResponseEntity<Notification> reserveHotel(Reservation reservation) {
 		Long hotelId = reservation.getHotelId();
 		Long customerId = reservation.getCustomerId();
 		HotelManagement isHotelPresent = hotelManagementClient.isHotelIdPresent(hotelId).getBody();
@@ -73,22 +71,20 @@ public class ReservationController {
 		} else {
 			return ResponseEntity.status(409).build();
 		}
-
 	}
 
-	@PostMapping("/sendPayment")
-	public ResponseEntity<Payment> sendPayment(@RequestBody Payment payment) {
+	public ResponseEntity<Payment> sendPayment(Payment payment) {
 		return paymentClient.makePayment(payment);
 	}
 
-	@PostMapping("/sendNotification")
-	public ResponseEntity<Notification> sendNotification(@RequestBody Notification notification) {
+	public ResponseEntity<Notification> sendNotification(Notification notification) {
 		return notificationClient.sendNotification(notification);
 	}
+
 	@KafkaListener(topics = "reserve-room")
-	public String getNotifications(Reservation reservation)  {
+	public String getNotifications(Reservation reservation) {
 		System.out.println("Recieved account event" + reservation.toString());
-		
+
 		return "Successful" + reservation.toString();
 	}
 }

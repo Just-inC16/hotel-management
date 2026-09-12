@@ -1,5 +1,35 @@
-docker run -it --name node -v /mnt/c/Users/jc561/OneDrive/Desktop:/desktop node bash
+docker run -it --name node -v C:/Users/jc561/Desktop/frontend-claude/fe:/fe node:latest bash
+ng serve --host 0.0.0.0 --port 4200
+
+
+docker volume inspect kafka-data
+docker run -d --name kafka -p 9092:9092 -v kafka-data:/var/lib/docker/volumes/kafka-data/_data apache/kafka:latest
+
+
 docker start -ai node
+docker stop ng
+docker rm ng
+docker exec -it node bash
+docker debug ng
 
 
+private KafkaTemplate<String, NotificationEvent> kafkaTemplate;
+		private KafkaTemplate<String, AccountEvent> kafkaAccountTemplate;
 
+		public NotificationController(NotificationRepository notificationRepository,
+				KafkaTemplate<String, NotificationEvent> kafkaTemplate,
+				KafkaTemplate<String, AccountEvent> kafkaAccountTemplate) {
+			this.notificationRepository = notificationRepository;
+			this.kafkaTemplate = kafkaTemplate;
+			this.kafkaAccountTemplate = kafkaAccountTemplate;
+		}
+
+		@KafkaListener(topics = "new-transaction")
+		public String getNotifications(String event) throws JsonMappingException, JsonProcessingException {
+			System.out.println("Recieved account event" + event);
+			AccountEvent accountEvent = new ObjectMapper().readValue(event, AccountEvent.class);
+			Account senderAccount = accountEvent.getSenderAccount();
+			Account receiverAccount = accountEvent.getReceiverAccount();
+			System.out.println("Successful transfer from " + senderAccount.getId() + " to " + receiverAccount.getId());
+			return "Successful transfer from " + senderAccount.getId() + " to " + receiverAccount.getId();
+		}

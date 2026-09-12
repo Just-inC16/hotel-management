@@ -31,6 +31,7 @@ services:
   # -----------------------
   apiGateway:
     build: ./apiGateway
+    image: hotel-app-apigateway:latest
     depends_on:
       - eureka-server
     environment:
@@ -72,6 +73,10 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      # EUREKA_CLIENT_SERVICEURL_DEFAULTZONE alone doesn't reliably bind for this
+      # service (env vars into a Map-typed @ConfigurationProperty are relaxed-bound
+      # inconsistently); force it via a JVM system property too, which wins outright.
+      JAVA_TOOL_OPTIONS: -Deureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/reservation
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
@@ -84,6 +89,7 @@ services:
   # -----------------------
   hotelManagement:
     build: ./hotelManagement
+    image: hotel-app-hotelmanagement:latest
     depends_on:
       eureka-server:
         condition: service_started

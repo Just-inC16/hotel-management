@@ -1,4 +1,4 @@
-package com.tcs.payment;
+package com.tcs.payment.model;
 
 import java.math.BigDecimal;
 
@@ -8,9 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 //@Data
@@ -18,10 +15,6 @@ import lombok.NoArgsConstructor;
 //@NoArgsConstructor
 @Table(name = "payment")
 public class Payment {
-	
-
-	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,7 +25,7 @@ public class Payment {
 	@Column(name = "amount", nullable = false)
 	private BigDecimal amount;
 	public Payment() {
-		
+
 	}
 	// Additional fields such as payment method, status etc.
 	public Payment(Long id, Long customerId, BigDecimal amount) {

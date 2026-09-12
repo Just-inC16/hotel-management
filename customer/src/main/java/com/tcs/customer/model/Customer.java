@@ -1,4 +1,4 @@
-package com.tcs.customer;
+package com.tcs.customer.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,16 +22,37 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
+
+	@Column(name = "last_name", nullable = false)
+	private String lastName;
 
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
 	@Column(name = "password", nullable = false)
 	private String password;
-	
-	//Customer or manager role 
+
+	//Customer or manager role
 	private String role;
+
+	@Column(name = "phone")
+	private String phone;
+
+	@Column(name = "payment_cardholder_name")
+	private String paymentCardholderName;
+
+	@Column(name = "payment_card_brand")
+	private String paymentCardBrand;
+
+	@Column(name = "payment_last4", length = 4)
+	private String paymentLast4;
+
+	@Column(name = "payment_expiry", length = 5)
+	private String paymentExpiry;
+
+	@Column(name = "token")
+	private String token;
 	// Getters and setters...
 }

@@ -1,0 +1,61 @@
+<div
+  #viewport
+  class="map-viewport"
+  role="group"
+  aria-label="Hotel map"
+  [class.panning]="isPanning()"
+  (wheel)="onWheel($event)"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerUp($event)"
+>
+  @if (pins().length === 0) {
+    <p class="map-empty">No hotels to show on the map.</p>
+  }
+
+  <div class="map-content" [style.transform]="contentStyle().transform">
+    @for (pin of pins(); track pin.hotel.hotelId) {
+      <button
+        type="button"
+        class="map-pin"
+        [class.selected]="pin.hotel.hotelId === selectedHotelId()"
+        [style.left.%]="pin.x"
+        [style.top.%]="pin.y"
+        (click)="select(pin.hotel.hotelId)"
+        [attr.aria-pressed]="pin.hotel.hotelId === selectedHotelId()"
+      >
+        <span class="pin-marker" aria-hidden="true"></span>
+        <span class="pin-label">
+          <strong>{{ pin.hotel.name }}</strong>
+          <span>{{ pin.hotel.address.city }}, {{ pin.hotel.address.state }}</span>
+          <span>{{ pin.hotel.price.currency }} {{ pin.hotel.price.total }}</span>
+        </span>
+      </button>
+    }
+  </div>
+
+  <div class="map-controls">
+    <button
+      type="button"
+      class="map-control-button"
+      (click)="zoomIn()"
+      [disabled]="!canZoomIn()"
+      aria-label="Zoom in"
+    >
+      +
+    </button>
+    <button
+      type="button"
+      class="map-control-button"
+      (click)="zoomOut()"
+      [disabled]="!canZoomOut()"
+      aria-label="Zoom out"
+    >
+      &minus;
+    </button>
+    <button type="button" class="map-control-button reset" (click)="resetView()" aria-label="Reset map view">
+      &#8634;
+    </button>
+  </div>
+</div>

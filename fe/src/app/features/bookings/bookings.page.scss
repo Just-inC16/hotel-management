@@ -1,0 +1,62 @@
+.bookings-page {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.bookings-page h1 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.status-message {
+  color: #64748b;
+  padding: 1.5rem 0;
+}
+
+.status-message.error {
+  color: #dc2626;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+}
+
+.back-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bookings-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.booking-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.booking-card h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #0f172a;
+}
+
+.booking-card .location {
+  margin: 0.35rem 0 0;
+  color: #64748b;
+}
+
+.booking-card .dates {
+  margin: 0.6rem 0 0;
+  font-weight: 600;
+  color: #334155;
+}

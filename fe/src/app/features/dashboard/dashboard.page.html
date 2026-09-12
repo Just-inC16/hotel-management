@@ -1,0 +1,95 @@
+<section class="dashboard-page">
+  <div class="hero-card">
+    <p class="eyebrow">Find your stay</p>
+    <h1>Search hotels</h1>
+    <p>Browse hotels by city, filter by star rating, or click a pin on the map.</p>
+  </div>
+
+  <div class="filter-bar surface-card">
+    <label class="search-field">
+      <span class="sr-only">Search hotels</span>
+      <input
+        type="search"
+        placeholder="Search by hotel name, city, or state"
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+      />
+    </label>
+
+    <label>
+      City
+      <select [ngModel]="cityFilter()" (ngModelChange)="cityFilter.set($event)">
+        <option value="all">All cities</option>
+        @for (city of cities(); track city) {
+          <option [value]="city">{{ city }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Min. star rating
+      <select
+        [ngModel]="minStars()"
+        (ngModelChange)="minStars.set(+$event)"
+      >
+        <option [value]="0">Any</option>
+        <option [value]="3">3+ stars</option>
+        <option [value]="4">4+ stars</option>
+        <option [value]="5">5 stars</option>
+      </select>
+    </label>
+
+    <label>
+      Sort by
+      <select [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)">
+        <option value="rating-desc">Guest rating</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+      </select>
+    </label>
+
+    <button type="button" class="reset-button" (click)="resetFilters()">Reset</button>
+  </div>
+
+  <div class="content-grid">
+    <div class="map-panel">
+      <app-hotel-map
+        [hotels]="filteredHotels()"
+        [selectedHotelId]="selectedHotelId()"
+        (hotelSelected)="viewHotel($event)"
+      />
+    </div>
+
+    <div class="results-panel">
+      <p class="result-count">{{ filteredHotels().length }} hotels found</p>
+
+      @if (filteredHotels().length === 0) {
+        <div class="empty-state">
+          <p>No hotels match your filters. Try widening your search.</p>
+        </div>
+      }
+
+      <div class="hotel-grid">
+        @for (hotel of filteredHotels(); track hotel.hotelId) {
+          <article
+            class="hotel-card surface-card"
+            [class.selected]="hotel.hotelId === selectedHotelId()"
+            (mouseenter)="onMapSelect(hotel.hotelId)"
+            (click)="viewHotel(hotel.hotelId)"
+          >
+            <div class="card-header">
+              <h2>{{ hotel.name }}</h2>
+              <span class="stars">{{ '★'.repeat(hotel.starRating) }}</span>
+            </div>
+            <p class="location">{{ hotel.address.city }}, {{ hotel.address.state }}</p>
+            <p class="description">{{ hotel.description }}</p>
+            <div class="card-footer">
+              <span class="rating">{{ hotel.guestRating }} / 5 guest rating</span>
+              <span class="price">{{ hotel.price.currency }} {{ hotel.price.total }} / night</span>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>

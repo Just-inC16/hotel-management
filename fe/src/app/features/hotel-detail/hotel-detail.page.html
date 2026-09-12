@@ -1,0 +1,69 @@
+<section class="detail-page">
+  @if (!loaded()) {
+    <p class="status-message">Loading hotel…</p>
+  } @else if (!hotel()) {
+    <div class="not-found">
+      <h1>Hotel not found</h1>
+      <p>We couldn't find that hotel. It may have been removed.</p>
+      <a routerLink="/dashboard" class="back-link">Back to search</a>
+    </div>
+  } @else {
+    @let currentHotel = hotel()!;
+    <a routerLink="/dashboard" class="back-link">&larr; Back to search</a>
+
+    <div class="detail-grid">
+      <div class="detail-main">
+        <div class="card-header">
+          <h1>{{ currentHotel.name }}</h1>
+          <span class="stars">{{ '★'.repeat(currentHotel.starRating) }}</span>
+        </div>
+        <p class="address">
+          {{ currentHotel.address.line1 }}, {{ currentHotel.address.city }},
+          {{ currentHotel.address.state }} {{ currentHotel.address.postalCode }}
+        </p>
+        <p class="rating">{{ currentHotel.guestRating }} / 5 guest rating</p>
+
+        <p class="description">{{ currentHotel.description }}</p>
+
+        <h2>Benefits</h2>
+        <ul class="benefits-list">
+          @for (benefit of currentHotel.benefits; track benefit) {
+            <li>{{ benefit }}</li>
+          }
+        </ul>
+
+        <h2>Location</h2>
+        <app-hotel-map [hotels]="mapHotels()" [selectedHotelId]="currentHotel.hotelId" />
+      </div>
+
+      <aside class="booking-card">
+        <p class="price-label">Price per night</p>
+        <p class="price">{{ currentHotel.price.currency }} {{ currentHotel.price.total }}</p>
+        <p class="price-note">Base rate {{ currentHotel.price.currency }} {{ currentHotel.price.base }} + taxes &amp; fees</p>
+
+        @if (bookingConfirmed()) {
+          <p class="confirmation">Booking request received. A confirmation will follow.</p>
+        } @else {
+          <div class="booking-form">
+            <label>
+              Check-in
+              <input type="date" name="startDate" [(ngModel)]="startDate" />
+            </label>
+            <label>
+              Check-out
+              <input type="date" name="endDate" [(ngModel)]="endDate" />
+            </label>
+
+            @if (bookingError()) {
+              <p class="error-message">{{ bookingError() }}</p>
+            }
+
+            <button type="button" class="book-button" [disabled]="isBooking()" (click)="book()">
+              {{ isBooking() ? 'Booking…' : 'Book now' }}
+            </button>
+          </div>
+        }
+      </aside>
+    </div>
+  }
+</section>

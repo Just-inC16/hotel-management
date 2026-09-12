@@ -1,0 +1,126 @@
+<section class="profile-page">
+  @if (user(); as currentUser) {
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="avatar">{{ currentUser.firstName.charAt(0) }}{{ currentUser.lastName.charAt(0) }}</div>
+        <div>
+          <h1>{{ currentUser.firstName }} {{ currentUser.lastName }}</h1>
+          <p>{{ currentUser.email }}</p>
+        </div>
+      </div>
+
+      <form (ngSubmit)="save()" class="profile-form">
+        <div class="field-row">
+          <label>
+            First name
+            <input name="firstName" [(ngModel)]="firstName" required />
+          </label>
+          <label>
+            Last name
+            <input name="lastName" [(ngModel)]="lastName" required />
+          </label>
+        </div>
+
+        <label>
+          Email
+          <input name="email" [value]="currentUser.email" disabled />
+        </label>
+
+        <label>
+          Phone
+          <input name="phone" [(ngModel)]="phone" placeholder="(555) 555-5555" />
+        </label>
+
+        <h2>Payment method</h2>
+        <div class="field-row">
+          <label>
+            Cardholder name
+            <input name="paymentCardholderName" [(ngModel)]="paymentCardholderName" />
+          </label>
+          <label>
+            Card brand
+            <select name="paymentCardBrand" [(ngModel)]="paymentCardBrand">
+              <option value="">Select brand</option>
+              <option value="VISA">Visa</option>
+              <option value="MASTERCARD">Mastercard</option>
+              <option value="AMEX">American Express</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </label>
+        </div>
+        <div class="field-row">
+          <label>
+            Card number last 4 digits
+            <input
+              name="paymentLast4"
+              [(ngModel)]="paymentLast4"
+              maxlength="4"
+              pattern="[0-9]{4}"
+              placeholder="4242"
+            />
+          </label>
+          <label>
+            Expiry (MM/YY)
+            <input
+              name="paymentExpiry"
+              [(ngModel)]="paymentExpiry"
+              maxlength="5"
+              pattern="\d{2}/\d{2}"
+              placeholder="01/30"
+            />
+          </label>
+        </div>
+
+        @if (saveError()) {
+          <p class="error-message">{{ saveError() }}</p>
+        }
+
+        <div class="form-actions">
+          <button type="submit" class="save-button">Save changes</button>
+          <button type="button" class="logout-button" (click)="logout()">Log out</button>
+        </div>
+
+        @if (savedMessage()) {
+          <p class="saved-message">Profile updated.</p>
+        }
+      </form>
+
+      <section class="preferences-section" id="preferences">
+        <h2>What matters most to you?</h2>
+        <p class="preferences-hint">
+          Pick exactly {{ requiredPreferenceCount }} qualities to power your personalized recommendations.
+        </p>
+
+        <div class="quality-grid">
+          @for (quality of qualities; track quality) {
+            <label class="quality-option" [class.selected]="isSelected(quality)">
+              <input
+                type="checkbox"
+                [checked]="isSelected(quality)"
+                (change)="toggleQuality(quality)"
+              />
+              {{ quality | titlecase }}
+            </label>
+          }
+        </div>
+
+        @if (preferencesError()) {
+          <p class="error-message">{{ preferencesError() }}</p>
+        }
+
+        <button
+          type="button"
+          class="save-button"
+          [disabled]="selectedQualities.length !== requiredPreferenceCount"
+          (click)="savePreferences()"
+        >
+          Save preferences ({{ selectedQualities.length }}/{{ requiredPreferenceCount }})
+        </button>
+
+        @if (preferencesSaved()) {
+          <p class="saved-message">Preferences saved.</p>
+        }
+      </section>
+    </div>
+  }
+</section>

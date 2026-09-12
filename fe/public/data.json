@@ -1,0 +1,303 @@
+{
+  "hotels": [
+    {
+      "hotelId": "NYC001",
+      "name": "The Plaza Hotel",
+      "address": {
+        "line1": "768 5th Ave",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10019",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 40.7645, "longitude": -73.9742 },
+      "starRating": 5,
+      "guestRating": 4.7,
+      "description": "Located at the edge of Central Park, offering luxury shopping, iconic landmarks, and world-class dining within walking distance.",
+      "benefits": [
+        "Central Park access",
+        "Luxury suites",
+        "Fine dining",
+        "Historic landmark"
+      ],
+      "price": { "currency": "USD", "base": 620.00, "total": 712.50 }
+    },
+    {
+      "hotelId": "NYC002",
+      "name": "The Standard High Line",
+      "address": {
+        "line1": "848 Washington St",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10014",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 40.7411, "longitude": -74.0087 },
+      "starRating": 4,
+      "guestRating": 4.4,
+      "description": "Trendy hotel in the Meatpacking District with panoramic views and vibrant nightlife.",
+      "benefits": [
+        "Rooftop bar",
+        "City views",
+        "Nightlife access"
+      ],
+      "price": { "currency": "USD", "base": 310.00, "total": 355.00 }
+    },
+    {
+      "hotelId": "NYC003",
+      "name": "CitizenM Times Square",
+      "address": {
+        "line1": "218 W 50th St",
+        "city": "New York",
+        "state": "NY",
+        "postalCode": "10019",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 40.7616, "longitude": -73.9847 },
+      "starRating": 4,
+      "guestRating": 4.5,
+      "description": "Modern, tech-enabled hotel steps away from Times Square and Broadway theaters.",
+      "benefits": [
+        "Smart rooms",
+        "24/7 food",
+        "Prime location"
+      ],
+      "price": { "currency": "USD", "base": 180.00, "total": 205.00 }
+    },
+
+    {
+      "hotelId": "LA001",
+      "name": "The Beverly Hills Hotel",
+      "address": {
+        "line1": "9641 Sunset Blvd",
+        "city": "Beverly Hills",
+        "state": "CA",
+        "postalCode": "90210",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 34.0810, "longitude": -118.4137 },
+      "starRating": 5,
+      "guestRating": 4.8,
+      "description": "Iconic luxury hotel on Sunset Boulevard surrounded by palm-lined streets and upscale boutiques.",
+      "benefits": [
+        "Luxury spa",
+        "Fine dining",
+        "Celebrity hotspot"
+      ],
+      "price": { "currency": "USD", "base": 850.00, "total": 975.00 }
+    },
+    {
+      "hotelId": "LA002",
+      "name": "The Line Hotel",
+      "address": {
+        "line1": "3515 Wilshire Blvd",
+        "city": "Los Angeles",
+        "state": "CA",
+        "postalCode": "90010",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 34.0652, "longitude": -118.3090 },
+      "starRating": 4,
+      "guestRating": 4.3,
+      "description": "Artistic, modern hotel in Koreatown with a vibrant cultural scene.",
+      "benefits": [
+        "Rooftop pool",
+        "Artistic design",
+        "Central LA location"
+      ],
+      "price": { "currency": "USD", "base": 220.00, "total": 255.00 }
+    },
+    {
+      "hotelId": "LA003",
+      "name": "Freehand Los Angeles",
+      "address": {
+        "line1": "416 W 8th St",
+        "city": "Los Angeles",
+        "state": "CA",
+        "postalCode": "90014",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 34.0447, "longitude": -118.2560 },
+      "starRating": 3,
+      "guestRating": 4.2,
+      "description": "Stylish budget-friendly hotel in downtown LA with a popular rooftop bar.",
+      "benefits": [
+        "Affordable",
+        "Rooftop bar",
+        "Trendy atmosphere"
+      ],
+      "price": { "currency": "USD", "base": 95.00, "total": 110.00 }
+    },
+
+    {
+      "hotelId": "MIA001",
+      "name": "Fontainebleau Miami Beach",
+      "address": {
+        "line1": "4441 Collins Ave",
+        "city": "Miami Beach",
+        "state": "FL",
+        "postalCode": "33140",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 25.8172, "longitude": -80.1225 },
+      "starRating": 5,
+      "guestRating": 4.5,
+      "description": "Beachfront resort with tropical scenery, vibrant nightlife, and direct ocean access.",
+      "benefits": [
+        "Beachfront",
+        "Nightclub",
+        "Luxury spa"
+      ],
+      "price": { "currency": "USD", "base": 410.00, "total": 465.00 }
+    },
+    {
+      "hotelId": "MIA002",
+      "name": "The Confidante Miami Beach",
+      "address": {
+        "line1": "4041 Collins Ave",
+        "city": "Miami Beach",
+        "state": "FL",
+        "postalCode": "33140",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 25.8135, "longitude": -80.1220 },
+      "starRating": 4,
+      "guestRating": 4.3,
+      "description": "Retro-chic beachfront hotel offering colorful design and relaxed vibes.",
+      "benefits": [
+        "Beach access",
+        "Retro style",
+        "Outdoor pool"
+      ],
+      "price": { "currency": "USD", "base": 240.00, "total": 275.00 }
+    },
+    {
+      "hotelId": "MIA003",
+      "name": "Yotel Miami",
+      "address": {
+        "line1": "227 NE 2nd St",
+        "city": "Miami",
+        "state": "FL",
+        "postalCode": "33132",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 25.7773, "longitude": -80.1909 },
+      "starRating": 4,
+      "guestRating": 4.4,
+      "description": "Tech-forward hotel in downtown Miami with modern compact rooms.",
+      "benefits": [
+        "Smart rooms",
+        "Modern design",
+        "Great downtown access"
+      ],
+      "price": { "currency": "USD", "base": 150.00, "total": 175.00 }
+    },
+
+    {
+      "hotelId": "CHI001",
+      "name": "The Langham Chicago",
+      "address": {
+        "line1": "330 N Wabash Ave",
+        "city": "Chicago",
+        "state": "IL",
+        "postalCode": "60611",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 41.8880, "longitude": -87.6260 },
+      "starRating": 5,
+      "guestRating": 4.9,
+      "description": "Luxury hotel along the Chicago River offering stunning views and world-class amenities.",
+      "benefits": [
+        "River views",
+        "Luxury spa",
+        "Indoor pool"
+      ],
+      "price": { "currency": "USD", "base": 520.00, "total": 590.00 }
+    },
+    {
+      "hotelId": "CHI002",
+      "name": "The Godfrey Hotel Chicago",
+      "address": {
+        "line1": "127 W Huron St",
+        "city": "Chicago",
+        "state": "IL",
+        "postalCode": "60654",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 41.8947, "longitude": -87.6315 },
+      "starRating": 4,
+      "guestRating": 4.4,
+      "description": "Boutique hotel with a rooftop lounge and stylish modern rooms.",
+      "benefits": [
+        "Rooftop lounge",
+        "Boutique design",
+        "Central location"
+      ],
+      "price": { "currency": "USD", "base": 190.00, "total": 215.00 }
+    },
+    {
+      "hotelId": "CHI003",
+      "name": "Freehand Chicago",
+      "address": {
+        "line1": "19 E Ohio St",
+        "city": "Chicago",
+        "state": "IL",
+        "postalCode": "60611",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 41.8923, "longitude": -87.6270 },
+      "starRating": 3,
+      "guestRating": 4.2,
+      "description": "Budget-friendly hotel with shared rooms and a trendy social atmosphere.",
+      "benefits": [
+        "Affordable",
+        "Shared rooms",
+        "Trendy vibe"
+      ],
+      "price": { "currency": "USD", "base": 85.00, "total": 100.00 }
+    },
+
+    {
+      "hotelId": "SF001",
+      "name": "Fairmont San Francisco",
+      "address": {
+        "line1": "950 Mason St",
+        "city": "San Francisco",
+        "state": "CA",
+        "postalCode": "94108",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 37.7925, "longitude": -122.4106 },
+      "starRating": 5,
+      "guestRating": 4.6,
+      "description": "Historic luxury hotel atop Nob Hill with panoramic city views.",
+      "benefits": [
+        "Historic landmark",
+        "City views",
+        "Fine dining"
+      ],
+      "price": { "currency": "USD", "base": 380.00, "total": 430.00 }
+    },
+    {
+      "hotelId": "SF002",
+      "name": "Hotel Nikko San Francisco",
+      "address": {
+        "line1": "222 Mason St",
+        "city": "San Francisco",
+        "state": "CA",
+        "postalCode": "94102",
+        "countryCode": "US"
+      },
+      "coordinates": { "latitude": 37.7850, "longitude": -122.4100 },
+      "starRating": 4,
+      "guestRating": 4.4,
+      "description": "Japanese-inspired hotel near Union Square with modern amenities.",
+      "benefits": [
+        "Indoor pool",
+        "Japanese design",
+        "Central location"
+      ],
+      "price": { "currency": "USD", "base": 260.00, "total": 300.00 }
+    }
+  ]
+}

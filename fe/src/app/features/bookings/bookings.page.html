@@ -1,0 +1,26 @@
+<section class="bookings-page">
+  <h1>My bookings</h1>
+
+  @if (loading()) {
+    <p class="status-message">Loading your bookings…</p>
+  } @else if (loadError()) {
+    <p class="status-message error">We couldn't load your bookings. Please try again later.</p>
+  } @else if (bookingsWithHotels().length === 0) {
+    <div class="empty-state">
+      <p>You don't have any bookings yet.</p>
+      <a routerLink="/dashboard" class="back-link">Browse hotels</a>
+    </div>
+  } @else {
+    <div class="bookings-list">
+      @for (item of bookingsWithHotels(); track item.booking.id) {
+        <article class="booking-card surface-card">
+          <h2>{{ item.hotel?.name ?? 'Hotel #' + item.booking.hotelId }}</h2>
+          @if (item.hotel) {
+            <p class="location">{{ item.hotel.address.city }}, {{ item.hotel.address.state }}</p>
+          }
+          <p class="dates">{{ item.booking.startDate }} &rarr; {{ item.booking.endDate }}</p>
+        </article>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,63 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <p class="eyebrow">Welcome</p>
+    <h1>{{ mode() === 'sign-in' ? 'Sign in to your account' : 'Create your account' }}</h1>
+    <p class="subtitle">
+      {{
+        mode() === 'sign-in'
+          ? 'Sign in to search hotels and manage your bookings.'
+          : 'Create an account to save your profile and manage bookings.'
+      }}
+    </p>
+
+    <div class="mode-toggle">
+      <button
+        type="button"
+        [class.active]="mode() === 'sign-in'"
+        (click)="setMode('sign-in')"
+      >
+        Sign in
+      </button>
+      <button
+        type="button"
+        [class.active]="mode() === 'create-account'"
+        (click)="setMode('create-account')"
+      >
+        Create account
+      </button>
+    </div>
+
+    <form (ngSubmit)="submit()" #loginForm="ngForm" class="auth-form">
+      @if (mode() === 'create-account') {
+        <div class="field-row">
+          <label>
+            First name
+            <input name="firstName" [(ngModel)]="firstName" required />
+          </label>
+          <label>
+            Last name
+            <input name="lastName" [(ngModel)]="lastName" required />
+          </label>
+        </div>
+      }
+
+      <label>
+        Email
+        <input name="email" type="email" [(ngModel)]="email" required />
+      </label>
+
+      <label>
+        Password
+        <input name="password" type="password" [(ngModel)]="password" required minlength="4" />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error-message">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" class="submit-button" [disabled]="!loginForm.form.valid || submitting()">
+        {{ mode() === 'sign-in' ? 'Sign in' : 'Create account' }}
+      </button>
+    </form>
+  </div>
+</section>

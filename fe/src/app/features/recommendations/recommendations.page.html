@@ -1,0 +1,54 @@
+<section class="recommendations-page">
+  <h1>Recommended for you</h1>
+
+  @if (loading()) {
+    <p class="status-message">Finding your best matches…</p>
+  } @else if (!preferences()) {
+    <div class="empty-state">
+      <p>Pick your top 3 favorite hotel qualities to see personalized recommendations.</p>
+      <a routerLink="/profile" class="back-link">Set preferences</a>
+    </div>
+  } @else {
+    <div class="top-selector">
+      @for (count of topCountOptions; track count) {
+        <button type="button" [class.active]="topCount() === count" (click)="setTopCount(count)">
+          Top {{ count }}
+        </button>
+      }
+    </div>
+
+    @if (recommendations().length === 0) {
+      <p class="status-message">No hotels available yet.</p>
+    } @else {
+      <div class="recommendation-list">
+        @for (item of recommendations(); track item.hotel.hotelId) {
+          <article class="recommendation-card surface-card">
+            <div class="card-header">
+              <h2>{{ item.hotel.name }}</h2>
+              <span class="score">{{ (item.totalScore * 100).toFixed(0) }}% match</span>
+            </div>
+            <p class="location">{{ item.hotel.address.city }}, {{ item.hotel.address.state }}</p>
+            <dl class="breakdown">
+              <div>
+                <dt>Stars</dt>
+                <dd>{{ (item.breakdown.stars * 100).toFixed(0) }}%</dd>
+              </div>
+              <div>
+                <dt>Location</dt>
+                <dd>{{ (item.breakdown.location * 100).toFixed(0) }}%</dd>
+              </div>
+              <div>
+                <dt>Pricing</dt>
+                <dd>{{ (item.breakdown.pricing * 100).toFixed(0) }}%</dd>
+              </div>
+              <div>
+                <dt>Amenities</dt>
+                <dd>{{ (item.breakdown.amenities * 100).toFixed(0) }}%</dd>
+              </div>
+            </dl>
+          </article>
+        }
+      </div>
+    }
+  }
+</section>

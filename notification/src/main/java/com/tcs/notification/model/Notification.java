@@ -1,4 +1,4 @@
-package com.tcs.notification;
+package com.tcs.notification.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +21,7 @@ public class Notification {
 
 	private String entity;
 	private String message;
-	
+
 	public Notification(String entity, String message) {
 		this.entity= entity;
 		this.message=message;

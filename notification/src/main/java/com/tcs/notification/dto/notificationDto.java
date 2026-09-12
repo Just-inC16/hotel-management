@@ -1,4 +1,4 @@
-package com.tcs.notification;
+package com.tcs.notification.dto;
 
 import lombok.Data;
 

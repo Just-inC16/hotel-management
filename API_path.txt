@@ -1,0 +1,26 @@
+GET /api/v1/hotelManagements
+POST /api/v1/hotelManagements
+GET /api/v1/hotelManagements/{id}
+PUT /api/v1/hotelManagements/book/{id}
+PUT /api/v1/hotelManagements/unbook/{id}
+GET /api/v1/hotelManagements/analytics 
+GET /api/v1/hotelManagements/topHotels
+
+GET /api/v1/customers/{id} 
+POST /api/v1/customers/signup
+POST /api/v1/customers/signin
+POST /api/v1/customers/reserve 
+PATCH /api/v1/customers/{id}
+
+POST /api/v1/notifications/send
+GET /api/v1/notifications/{id}
+
+POST /api/v1/payments
+GET /api/v1/payments/{id}
+
+POST /api/v1/reservations
+GET /api/v1/reservations/{id}
+GET /api/v1/reservations/customer/{customerId}
+POST /api/v1/reservations/reserveHotel
+POST /api/v1/reservations/sendPayment
+POST /api/v1/reservations/sendNotification

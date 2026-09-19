@@ -11,7 +11,7 @@ import com.tcs.customer.Dto.Notification;
 
 
 @Component
-@FeignClient(name="api-gateway1", url= "${gateway.url}")
+@FeignClient(name="api-gateway1", url= "${notification.service.url}")
 public interface NotificationClient {
 	@PostMapping("notification/api/v1/notifications/send")
 	public ResponseEntity<Notification> sendNotification(@RequestBody Notification notification);

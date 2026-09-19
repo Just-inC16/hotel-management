@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.tcs.reservation.Dto.Payment;
 
 @Component
-@FeignClient(name = "api-gateway3", url = "${gateway.url}")
+@FeignClient(name = "api-gateway3", url = "${payment.service.url}")
 public interface PaymentClient {
 	@PostMapping("/payment/api/v1/payments")
 	public ResponseEntity<Payment> makePayment(@RequestBody Payment payment);

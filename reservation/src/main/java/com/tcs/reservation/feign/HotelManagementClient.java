@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import com.tcs.reservation.Dto.HotelManagement;
 
 @Component
-@FeignClient(name = "api-gateway1", url = "${hotelmanagement.service.url}")
+@FeignClient(name = "api-gateway1", url = "${gateway.url}")
 public interface HotelManagementClient {
 	@GetMapping("/hotelmanagement/api/v1/hotelManagements/{id}")
 	public ResponseEntity<HotelManagement> isHotelIdPresent(@PathVariable Long id);

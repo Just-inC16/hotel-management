@@ -83,9 +83,9 @@ public class CustomerService {
 		customerRepository.save(newCustomer);
 
 		// Communicate with notification service
-//		final String ENTITY = "Customer";
-//		final String MESSAGE = "Successful customer signup";
-//		this.createNewNotification(ENTITY, MESSAGE);
+		final String ENTITY = "Customer";
+		final String MESSAGE = "Successful customer signup";
+		this.createNewNotification(ENTITY, MESSAGE);
 
 		return ResponseEntity.ok(toAuthResponse(newCustomer));
 	}

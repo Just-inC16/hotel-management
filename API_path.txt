@@ -24,3 +24,15 @@ GET /api/v1/reservations/customer/{customerId}
 POST /api/v1/reservations/reserveHotel
 POST /api/v1/reservations/sendPayment
 POST /api/v1/reservations/sendNotification
+
+ANY /api/v1/hotelManagements/{proxy+}
+ANY /api/v1/customers/{proxy+}
+ANY /api/v1/notifications/{proxy+}
+ANY /api/v1/payments/{proxy+}
+ANY /api/v1/reservations/{proxy+}
+
+ANY /api/v1/hotelManagements*
+ANY /api/v1/customers*
+ANY /api/v1/notifications*
+ANY /api/v1/payments*
+ANY /api/v1/reservations*

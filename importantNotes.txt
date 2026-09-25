@@ -17,3 +17,8 @@ docker exec -it node bash
 docker debug ng
 
 
+
+
+ aws kafka create-topic  --cluster-arn arn:aws:kafka:us-east-1:440972292163:cluster/kafka/ba3c27a2-90fe-4d47-9454-e05aa4f631f3-8 --topic-name reserve-room --partition-count 1  --replication-factor 1
+ aws kafka create-topic  --cluster-arn arn:aws:kafka:us-east-1:440972292163:cluster/kafka/ba3c27a2-90fe-4d47-9454-e05aa4f631f3-8 --topic-name room-ready --partition-count 1  --replication-factor 1
+ aws kafka create-topic  --cluster-arn arn:aws:kafka:us-east-1:440972292163:cluster/kafka/ba3c27a2-90fe-4d47-9454-e05aa4f631f3-8 --topic-name room-ready-notification --partition-count 1  --replication-factor 1

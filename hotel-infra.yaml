@@ -1,0 +1,336 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Hotel Management - Infrastructure Layer (RDS, MSK, ALB)
+
+Parameters:
+
+  DBPassword:
+    Type: String
+    NoEcho: true
+    Description: RDS Master Password
+
+  DBUsername:
+    Type: String
+    Default: admin
+    Description: RDS Master Username
+
+  VpcId:
+    Type: String
+    Default: vpc-0a931ab6032ae0878
+    Description: VPC ID
+
+  # ALB Subnets (public, 2 AZs)
+  ALBSubnet1:
+    Type: String
+    Default: subnet-0538fb166de41cc09
+    Description: Public subnet us-east-1b
+
+  ALBSubnet2:
+    Type: String
+    Default: subnet-0909a8d55135d4e10
+    Description: Public subnet us-east-1a
+
+  # MSK uses 3 subnets across 3 AZs
+  MSKSubnet1:
+    Type: String
+    Default: subnet-0bbd483f6d2062fda
+    Description: MSK subnet us-east-1d
+
+  MSKSubnet2:
+    Type: String
+    Default: subnet-0538fb166de41cc09
+    Description: MSK subnet us-east-1b
+
+  MSKSubnet3:
+    Type: String
+    Default: subnet-09da2758045858ab3
+    Description: MSK subnet us-east-1f
+
+  SecurityGroup:
+    Type: String
+    Default: sg-0a46b5fb30112f56a
+    Description: Shared security group for all resources
+
+Resources:
+
+  # ============================================================
+  # SECURITY GROUP
+  # (referencing your existing one — or create a new one below)
+  # ============================================================
+
+  # ============================================================
+  # RDS - MySQL 8.4
+  # ============================================================
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: hotel-management-db-subnet-group
+      DBSubnetGroupDescription: Subnet group for hotel management RDS
+      SubnetIds:
+        - !Ref ALBSubnet1
+        - !Ref ALBSubnet2
+        - !Ref MSKSubnet1
+        - !Ref MSKSubnet3
+
+  Database:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: database-1
+      DBInstanceClass: db.m5.large
+      Engine: mysql
+      EngineVersion: "8.4"
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      AllocatedStorage: "20"
+      StorageType: gp3
+      StorageEncrypted: true
+      MultiAZ: false
+      PubliclyAccessible: false
+      BackupRetentionPeriod: 7
+      DeletionProtection: false
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      VPCSecurityGroups:
+        - !Ref SecurityGroup
+
+  # ============================================================
+  # MSK - Kafka 3.9.x
+  # ============================================================
+  MSKCluster:
+    Type: AWS::MSK::Cluster
+    Properties:
+      ClusterName: kafka
+      KafkaVersion: 3.9.x
+      NumberOfBrokerNodes: 3
+      BrokerNodeGroupInfo:
+        InstanceType: kafka.t3.small
+        ClientSubnets:
+          - !Ref MSKSubnet1
+          - !Ref MSKSubnet2
+          - !Ref MSKSubnet3
+        SecurityGroups:
+          - !Ref SecurityGroup
+        StorageInfo:
+          EBSStorageInfo:
+            VolumeSize: 1
+      EnhancedMonitoring: DEFAULT
+      EncryptionInfo:
+        EncryptionInTransit:
+          ClientBroker: TLS_PLAINTEXT
+          InCluster: true
+  # ============================================================
+  # MSK TOPICS
+  # ============================================================
+  ReserveRoomTopic:
+    Type: AWS::MSK::Topic
+    DependsOn: MSKCluster
+    Properties:
+      ClusterArn: !Ref MSKCluster
+      TopicName: reserve-room
+      ReplicationFactor: 1
+      PartitionCount: 1
+
+  RoomReadyTopic:
+    Type: AWS::MSK::Topic
+    DependsOn: MSKCluster
+    Properties:
+      ClusterArn: !Ref MSKCluster
+      TopicName: room-ready
+      ReplicationFactor: 1
+      PartitionCount: 1
+
+  RoomReadyNotificationTopic:
+    Type: AWS::MSK::Topic
+    DependsOn: MSKCluster
+    Properties:
+      ClusterArn: !Ref MSKCluster
+      TopicName: room-ready-notification
+      ReplicationFactor: 1
+      PartitionCount: 1
+
+  # ============================================================
+  # APPLICATION LOAD BALANCER
+  # ============================================================
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: load-balancer
+      Scheme: internet-facing
+      Type: application
+      SecurityGroups:
+        - !Ref SecurityGroup
+      Subnets:
+        - !Ref ALBSubnet1
+        - !Ref ALBSubnet2
+
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            MessageBody: "Not Found :("
+            StatusCode: "404"
+            ContentType: text/plain
+
+  # ============================================================
+  # TARGET GROUPS
+  # ============================================================
+  CustomerTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: re-customer2
+      Port: 8080
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckPath: /actuator/health
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+
+  NotificationTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: re-notification2
+      Port: 8084
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckPath: /actuator/health
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+
+  PaymentTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: re-payment2
+      Port: 8083
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckPath: /actuator/health
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+
+  HotelManagementTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: re-hotel-management2
+      Port: 8082
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckPath: /actuator/health
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+
+  ReservationTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: re-reservation2
+      Port: 8081
+      Protocol: HTTP
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckPath: /actuator/health
+      HealthCheckIntervalSeconds: 30
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+
+  # ============================================================
+  # ALB LISTENER RULES
+  # ============================================================
+  HotelManagementListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ALBListener
+      Priority: 1
+      Conditions:
+        - Field: path-pattern
+          Values: ["/api/v1/hotelManagements*"]
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref HotelManagementTargetGroup
+
+  CustomerListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ALBListener
+      Priority: 2
+      Conditions:
+        - Field: path-pattern
+          Values: ["/api/v1/customers*"]
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref CustomerTargetGroup
+
+  NotificationListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ALBListener
+      Priority: 3
+      Conditions:
+        - Field: path-pattern
+          Values: ["/api/v1/notifications*"]
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref NotificationTargetGroup
+
+  PaymentListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ALBListener
+      Priority: 4
+      Conditions:
+        - Field: path-pattern
+          Values: ["/api/v1/payments*"]
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref PaymentTargetGroup
+
+  ReservationListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ALBListener
+      Priority: 5
+      Conditions:
+        - Field: path-pattern
+          Values: ["/api/v1/reservations*"]
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref ReservationTargetGroup
+
+# ============================================================
+# OUTPUTS
+# ============================================================
+Outputs:
+
+  LoadBalancerDNS:
+    Description: ALB DNS Name — use this in your API Gateway HTTP integration
+    Value: !GetAtt LoadBalancer.DNSName
+    Export:
+      Name: !Sub ${AWS::StackName}-ALBDnsName
+
+  ALBListenerArn:
+    Description: ALB Listener ARN — use this in your API Gateway VPC Link integration
+    Value: !Ref ALBListener
+    Export:
+      Name: !Sub ${AWS::StackName}-ALBListenerArn
+
+  DatabaseEndpoint:
+    Description: RDS Endpoint — use this as DB_URL in your ECS task definitions
+    Value: !GetAtt Database.Endpoint.Address
+    Export:
+      Name: !Sub ${AWS::StackName}-DBEndpoint
+
+  MSKClusterArn:
+    Description: MSK Cluster ARN
+    Value: !Ref MSKCluster
+    Export:
+      Name: !Sub ${AWS::StackName}-MSKClusterArn
